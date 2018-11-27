@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView2 = (TextView) findViewById(R.id.textView2);
+        textView2 = findViewById(R.id.textView2);
         TextView.OnClickListener oclTv = new View.OnClickListener() {
             @Override
 
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         textView2.setOnClickListener(oclTv);
+
 
 
     }

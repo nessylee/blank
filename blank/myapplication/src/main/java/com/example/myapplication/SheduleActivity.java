@@ -1,61 +1,61 @@
 package com.example.myapplication;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 
-import java.util.Locale;
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.EventDay;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 
 public class SheduleActivity extends AppCompatActivity {
-
+    Button backButton;
     CalendarView calendarView;
-    Button button2;
+    List<EventDay> events = new ArrayList<>();
 
+    @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shedule_activity);
 
-        //Back button
+        backButton = findViewById(R.id.button2);
 
-        button2 = (Button) findViewById(R.id.button2);
-        View.OnClickListener oclBt = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SheduleActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        Button.OnClickListener onClickListener = v -> {
+            Intent intent = new Intent(SheduleActivity.this, MainActivity.class);
+            startActivity(intent);
         };
 
-        button2.setOnClickListener(oclBt);
+        backButton.setOnClickListener(onClickListener);
+        calendarView = findViewById(R.id.calendarView);
+
+        /*
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendarView.setDate(calendar);
+        } catch (OutOfDateRangeException e) {
+            throw new RuntimeException(e); // todo сделать оповещалку, когда научишься
+        }*/
 
 
-        //Change language
+        calendarView.setOnDayClickListener(eventDay -> {
+                    int icon = userMakeChoice();
+                    events.add(new EventDay(eventDay.getCalendar(), icon));
+                    calendarView.setEvents(events);
+                }
+        );
+    }
 
-        String languageToLoad = "ru";
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-
-        //как блеать с этим работать :(
-
-        calendarView = (CalendarView) findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-
-
-            }
-    });
+    private int userMakeChoice() {
+        return new Random().nextBoolean() ? R.drawable.rawr : R.drawable.ic_keyboard_arrow_left_black_35dp;
     }
 }
