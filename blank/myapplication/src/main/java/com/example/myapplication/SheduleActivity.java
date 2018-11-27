@@ -8,18 +8,24 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
-import com.applandeo.materialcalendarview.CalendarView;
-import com.applandeo.materialcalendarview.EventDay;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import kotlin.Unit;
+import ru.cleverpumpkin.calendar.CalendarDate;
+import ru.cleverpumpkin.calendar.CalendarView;
+
 
 public class SheduleActivity extends AppCompatActivity {
+
     Button backButton;
     CalendarView calendarView;
-    List<EventDay> events = new ArrayList<>();
 
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -36,23 +42,50 @@ public class SheduleActivity extends AppCompatActivity {
         };
 
         backButton.setOnClickListener(onClickListener);
-        calendarView = findViewById(R.id.calendarView);
+        calendarView = findViewById(R.id.calendar_view);
 
-        /*
         Calendar calendar = Calendar.getInstance();
-        try {
-            calendarView.setDate(calendar);
-        } catch (OutOfDateRangeException e) {
-            throw new RuntimeException(e); // todo сделать оповещалку, когда научишься
-        }*/
+        calendar.set(2018, 10, 27);
+        CalendarDate initDate = new CalendarDate(calendar.getTime());
+
+        calendar.set(2018, 10, 20);
+        CalendarDate minDate = new CalendarDate(calendar.getTime());
+        calendar.set(2018, 10, 30);
+        CalendarDate maxDate = new CalendarDate(calendar.getTime());
 
 
-        calendarView.setOnDayClickListener(eventDay -> {
-                    int icon = userMakeChoice();
-                    events.add(new EventDay(eventDay.getCalendar(), icon));
-                    calendarView.setEvents(events);
+        calendarView.setDatesIndicators(Arrays.asList(new TodayDateIndicator()));
+
+        calendarView.setupCalendar(initDate, minDate, maxDate, CalendarView.SelectionMode.MULTIPLE, Collections.emptyList(),
+                1, false);
+
+
+        calendarView.setOnDateClickListener(date -> {
+
+            List<CalendarView.DateIndicator> dateIndicators = calendarView.getDateIndicators(date);
+            System.err.println(dateIndicators);
+            System.err.println(dateIndicators.get(0).getColor());
+            return Unit.INSTANCE;
                 }
         );
+
+
+    }
+
+    public class TodayDateIndicator implements CalendarView.DateIndicator {
+
+        @Override
+        public int getColor() {
+            return 100;
+        }
+
+        @NotNull
+        @Override
+        public CalendarDate getDate() {
+            Calendar calendar = Calendar.getInstance();
+            CalendarDate calendarDate = new CalendarDate(calendar.getTime());
+            return calendarDate;
+        }
     }
 
     private int userMakeChoice() {
