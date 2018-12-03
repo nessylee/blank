@@ -7,17 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
-import kotlin.Unit;
 import ru.cleverpumpkin.calendar.CalendarDate;
 import ru.cleverpumpkin.calendar.CalendarView;
 
@@ -45,50 +36,48 @@ public class SheduleActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendar_view);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 10, 27);
+        calendar.set(2018, 00, 01);
         CalendarDate initDate = new CalendarDate(calendar.getTime());
 
-        calendar.set(2018, 10, 20);
+        calendar.set(2018, 11, 01);
         CalendarDate minDate = new CalendarDate(calendar.getTime());
-        calendar.set(2018, 10, 30);
+        calendar.set(2018, 11, 31);
         CalendarDate maxDate = new CalendarDate(calendar.getTime());
-
-
-        calendarView.setDatesIndicators(Arrays.asList(new TodayDateIndicator()));
 
         calendarView.setupCalendar(initDate, minDate, maxDate, CalendarView.SelectionMode.MULTIPLE, Collections.emptyList(),
                 1, false);
 
 
-        calendarView.setOnDateClickListener(date -> {
+               /* calendarView.setDatesIndicators(Arrays.asList(new TodayDateIndicator()));
 
-            List<CalendarView.DateIndicator> dateIndicators = calendarView.getDateIndicators(date);
-            System.err.println(dateIndicators);
-            System.err.println(dateIndicators.get(0).getColor());
-            return Unit.INSTANCE;
+
+
+                calendarView.setOnDateClickListener(date -> {
+
+                            List<CalendarView.DateIndicator> dateIndicators = calendarView.getDateIndicators(date);
+                           return Unit.INSTANCE;
+                        }
+                );
+
+            }
+
+           public class TodayDateIndicator implements CalendarView.DateIndicator {
+
+                @Override
+                public int getColor() {
+                    return 0;
                 }
-        );
 
+                @NotNull
+                @Override
+                public CalendarDate getDate() {
+                    return null;
+                }
+            }
 
-    }
+            private int userMakeChoice() {
+                return new Random().nextBoolean() ? R.drawable.rawr : R.drawable.ic_keyboard_arrow_left_black_35dp;*/
 
-    public class TodayDateIndicator implements CalendarView.DateIndicator {
-
-        @Override
-        public int getColor() {
-            return 100;
+            }
         }
 
-        @NotNull
-        @Override
-        public CalendarDate getDate() {
-            Calendar calendar = Calendar.getInstance();
-            CalendarDate calendarDate = new CalendarDate(calendar.getTime());
-            return calendarDate;
-        }
-    }
-
-    private int userMakeChoice() {
-        return new Random().nextBoolean() ? R.drawable.rawr : R.drawable.ic_keyboard_arrow_left_black_35dp;
-    }
-}
