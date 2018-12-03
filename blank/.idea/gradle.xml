@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/myapplication" />
+            <option value="$PROJECT_DIR$/screen" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
